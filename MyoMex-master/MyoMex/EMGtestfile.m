@@ -20,7 +20,7 @@ directory = 'C:\Users\kaste\OneDrive\Dokumente\Hochschule\Master\Masterthesis\So
 
 
 pause(0.1);
-m1.emg
+m1.emg;
 
 m1.isStreaming;
 timerVal=tic;
@@ -55,12 +55,14 @@ while(m1.isStreaming)
             [file,path]=uiputfile(fileName,'Save file name');
 
             if file == 0
-                
+                m1.stopStreaming();
+                m1.delete();
                 return;
             end
 
             writetable(T,fullfile(path,file));
             m1.stopStreaming();
+            m1.delete();
             
         end
     

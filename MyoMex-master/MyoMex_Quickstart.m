@@ -138,8 +138,8 @@ fprintf('EMG samples: %10d\tApprox. EMG sample rate: %5.2f\n\t',...
 %%
 % Finally, when you're done with |MyoMex|, don't forget to clean up!
 
-%%mm.delete;
-%%clear mm
+mm.delete;
+clear mm
 
 %%
 % Finally, take advantages of the following resources for additional

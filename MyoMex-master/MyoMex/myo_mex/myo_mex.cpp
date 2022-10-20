@@ -144,7 +144,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     mexErrMsgTxt("myo_mex cannot provide the specified number of outputs.");
   
   char* cmd = mxArrayToString(prhs[0]);
-  mexPrintf("Command is:  %s\n", cmd);
+  //mexPrintf("Command is:  %s\n", cmd);
   
   if ( !strcmp("init",cmd) ) {
     // ----------------------------------------- myo_mex init -------------
@@ -329,7 +329,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     collector.syncDataSources(); // sync data up again (flushes queue)
     
    
-    mexPrintf("Debug: Unlock");
+    mexPrintf("Debug: Unlock\n");
     mexUnlock();
     
   } else if ( !strcmp("delete",cmd) ) {
@@ -345,7 +345,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     CloseHandle (hMutex);
     hMutex = NULL;
     
-    mexPrintf("Debug: Unlock");
+    mexPrintf("Debug: Unlock\n");
     mexUnlock();
     
     if (pHub!=NULL)
