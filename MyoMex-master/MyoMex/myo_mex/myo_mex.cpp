@@ -126,11 +126,11 @@ void assnOutputStruct(mxArray *s, mxArray *d[], int id) {
   }
 }
 
-static void Close(void)
-{
-  mexPrintf("Unlock\n");
-  mexUnlock();
-}
+// static void Close(void)
+// {
+//     mexPrintf("Unlock\n");
+//     mexUnlock();
+// }
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
@@ -195,7 +195,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     // Note: The 
  //status is used to determine the initialization
     //   state in other calls
-    mexPrintf("Mex Locking");
+    mexPrintf("Debug: mexLock\n");
     mexLock();   
     
   } else if ( !strcmp("start_streaming",cmd) ) {
@@ -215,9 +215,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
       mexErrMsgTxt("Failed to create streaming thread!\n");
     DB_MYO_MEX("myo_mex start_streaming:\n\tSuccess\n");
     
-  } else if ( strcmp("get_streaming_data",cmd) ) {
+  } else if ( !strcmp("get_streaming_data",cmd) ) {
     // ----------------------------------------- myo_mex get_streaming_data
-      //mexPrintf("Debug: Get Streaming Data");
     if ( !mexIsLocked() )
       mexErrMsgTxt("myo_mex is not initialized.2\n");
     if ( !runThreadFlag )
@@ -330,11 +329,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     collector.syncDataSources(); // sync data up again (flushes queue)
     
    
+    mexPrintf("Debug: Unlock");
     mexUnlock();
     
   } else if ( !strcmp("delete",cmd) ) {
     // ----------------------------------------- myo_mex delete -----------
-    
+    mexPrintf("Debug: Delete Comparison");
     if ( !mexIsLocked() )
       mexErrMsgTxt("myo_mex is not initialized4.\n");
     if ( runThreadFlag )
@@ -345,7 +345,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     CloseHandle (hMutex);
     hMutex = NULL;
     
-    mexPrintf("Debug: Delete");
+    mexPrintf("Debug: Unlock");
     mexUnlock();
     
     if (pHub!=NULL)
