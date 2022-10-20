@@ -126,6 +126,11 @@ void assnOutputStruct(mxArray *s, mxArray *d[], int id) {
   }
 }
 
+static void Close(void)
+{
+  mexPrintf("Unlock\n");
+  mexUnlock();
+}
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
@@ -139,11 +144,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     mexErrMsgTxt("myo_mex cannot provide the specified number of outputs.");
   
   char* cmd = mxArrayToString(prhs[0]);
-  test=0;
+  mexPrintf("Command is:  %s\n", cmd);
   
   if ( !strcmp("init",cmd) ) {
     // ----------------------------------------- myo_mex init -------------
-      mexPrintf("Myo Mex init");
+      //mexPrintf("Myo Mex init");
     if ( mexIsLocked() )
       mexErrMsgTxt("myo_mex is already initialized.\n");
     if ( nrhs<2 )
@@ -190,7 +195,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     // Note: The 
  //status is used to determine the initialization
     //   state in other calls
-    
+    mexPrintf("Mex Locking");
     mexLock();   
     
   } else if ( !strcmp("start_streaming",cmd) ) {
@@ -210,9 +215,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
       mexErrMsgTxt("Failed to create streaming thread!\n");
     DB_MYO_MEX("myo_mex start_streaming:\n\tSuccess\n");
     
-  } else if ( !strcmp("get_streaming_data",cmd) ) {
+  } else if ( strcmp("get_streaming_data",cmd) ) {
     // ----------------------------------------- myo_mex get_streaming_data
-      mexPrintf("Debug: Get Streaming Data");
+      //mexPrintf("Debug: Get Streaming Data");
     if ( !mexIsLocked() )
       mexErrMsgTxt("myo_mex is not initialized.2\n");
     if ( !runThreadFlag )
@@ -304,6 +309,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
       assnOutputStruct(plhs[DATA_STRUCT_OUT_NUM], outData2, 2);
     }
     
+    //mexPrintf(cmd);
   } else if ( !strcmp("stop_streaming",cmd) ) {
     // ----------------------------------------- myo_mex stop_streaming ---
     if ( !mexIsLocked() )
@@ -323,7 +329,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     collector.addDataEnabled = false; // stop handling data events
     collector.syncDataSources(); // sync data up again (flushes queue)
     
-    mexPrintf("Debug: Stop Streaming");
+   
     mexUnlock();
     
   } else if ( !strcmp("delete",cmd) ) {
